@@ -54,7 +54,6 @@
                             </label>
                         </div>
                         <div id="menu-endereco-options_raio" class="col-xs-4 col-md-3">
-                            <!--[if lt IE 9]><p>Raio (mt):</p><![endif]-->
                             <input class="form-control floating-label" id="txtRaioSitesEndereco" type="text"
                                 maxlength="15" placeholder="Raio (mt)" disabled="disabled" title="Habilite o campo cliente ou SITES(ERBS)" />
                         </div>
@@ -148,4 +147,3 @@
     <script src="scripts/basico/ripples.min.js"></script>
 </body>
 </html>
-
