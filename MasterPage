@@ -1,0 +1,151 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="MapsApp.Site" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exemplo - Google maps App</title>
+    <link href="styles/basico/normalize.css" rel="stylesheet" />
+    <link href="styles/basico/bootstrap.css" rel="stylesheet" />
+    <link href="styles/basico/material.css" rel="stylesheet" />
+    <link href="styles/basico/ripples.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link href="styles/style_principal.css" rel="stylesheet" />
+    <link href="styles/style_componente.css" rel="stylesheet" />
+        <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div id="map-canvas" class="col-xs-12">
+    </div>
+    <form id="form1" runat="server">
+        <div id="page">
+
+            <div id="menu-superior" class="col-xs-12">
+                <div id="menu-endereco" class="col-xs-12 col-md-5 card">
+                    <div id="menu-dropdow-tipoProcura" class="col-xs-12 col-sm-4 col-md-3">
+                        <div id="dropdown-tipoProcura" class="btn-group">
+                            <div class="btn-group" style="z-index: 1001;">
+                                <a data-target="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Tipo
+                                consulta&nbsp;<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a id="option-endereco">Endereço</a></li>
+                                    <li><a id="option-latlong">Latitude,Longitude</a></li>
+                                    <li><a id="option-cpf">CPF</a></li>
+                                    <li>
+                                        <input id="dropdown-menu-hidden" type="hidden" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu-text-procura" class="form-group col-xs-12 col-sm-8 col-md-9" style="z-index: 1000;">
+                        <input id="txtProcura" class="form-control" type="text" onfocus="txtProcura_onchange(this.id);" />
+                        <a id="aProcurarEndereco" onclick="btnProcurarEndereco(this.id);" title="Procurar endereço">
+                            <i class="fa fa-arrow-right fa-fw"></i></a>
+                    </div>
+                    <div id="menu-endereco-options" class="form-group col-xs-12" style="z-index: 1000;">
+                        <div class="checkbox col-xs-3 col-md-3">
+                            <label>
+                                Clientes&nbsp;
+                            <input type="checkbox" id="chkClientesEndereco" onchange="onChangeChkClientesEndereco();" />
+                            </label>
+                        </div>
+                        <div id="menu-endereco-options_raio" class="col-xs-4 col-md-3">
+                            <!--[if lt IE 9]><p>Raio (mt):</p><![endif]-->
+                            <input class="form-control floating-label" id="txtRaioSitesEndereco" type="text"
+                                maxlength="15" placeholder="Raio (mt)" disabled="disabled" title="Habilite o campo cliente ou SITES(ERBS)" />
+                        </div>
+                    </div>
+                    <div class="bubble">
+                    </div>
+                    <div class="bubbleWhite">
+                    </div>
+                </div>
+                <div class="menu-endereco-info col-xs-4 col-sm-3 col-md-2  card">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p>
+                                Lat:
+                            </p>
+                        </div>
+                        <div class="col-xs-7">
+                            <input class="form-label" id="txtLat_result" type="text" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p>
+                                Long:
+                            </p>
+                        </div>
+                        <div class="col-xs-7">
+                            <input class="form-label" id="txtLong_result" type="text" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-endereco-info col-xs-4 col-sm-3 col-md-2 card">
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p>
+                                Lat ctr:
+                            </p>
+                        </div>
+                        <div class="col-xs-7">
+                            <input class="form-label" id="txtLatCentr_result" type="text" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-5">
+                            <p>
+                                Long ctr:
+                            </p>
+                        </div>
+                        <div class="col-xs-7">
+                            <input class="form-label" id="txtLongCentr_result" type="text" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-endereco-info col-xs-4 col-sm-3 col-md-2 card">
+                    <div class="col-xs-12">
+                        <div class="col-xs-8">
+                            <p>
+                                Posição exata:
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <ul id="tag-vermelho">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-8">
+                            <p>
+                                Posição ctr:
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <ul id="tag-azul">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+    <script src="scripts/basico/jquery-1.11.2.min.js"></script>
+
+    <script src="scripts/google_api.js"></script>
+    <script src="scripts/script_principal.js"></script>
+    <script src="scripts/script_componentes.js"></script>
+    <script src="scripts/basico/jquery-ui.min.js"></script>
+    <script src="scripts/basico/bootstrap.min.js"></script>
+    <script src="scripts/basico/material.js"></script>
+    <script src="scripts/basico/ripples.min.js"></script>
+</body>
+</html>
+
